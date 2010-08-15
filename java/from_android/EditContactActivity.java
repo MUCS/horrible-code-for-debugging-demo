@@ -1360,6 +1360,15 @@ public final class EditContactActivity extends Activity
         boolean skipAccountTypeCheck = false;
         boolean oneIsGoogle = oneSource instanceof GoogleSource;
         boolean twoIsGoogle = twoSource instanceof GoogleSource;
+	/*
+		Some comments for the next if / else block
+		considered p and q
+		if p and not q
+		if q and not p
+		if p and q
+		so if !p and !q skipAccountTypeCheck = false
+		otherwise we have returned or skipAccountTypeCheck = true
+	*/
         if (oneIsGoogle && !twoIsGoogle) {
             return -1;
         } else if (twoIsGoogle && !oneIsGoogle) {
@@ -1370,9 +1379,7 @@ public final class EditContactActivity extends Activity
 
         int value;
         if (!skipAccountTypeCheck) {
-            if (oneSource.accountType == null) {
-                return 1;
-            }
+	    /* bug here :-)  see http://android.git.kernel.org/?p=platform/packages/apps/Contacts.git;a=commitdiff;h=a1db3705a619dfcd662afe85ba5762771824d89d */
             value = oneSource.accountType.compareTo(twoSource.accountType);
             if (value != 0) {
                 return value;
